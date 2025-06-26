@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css link -->
+    <link rel="stylesheet" href="style.css">
+    <!-- favicon link -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <!-- title -->
+    <title>Water Level Monitor Dashboard</title>
+</head>
+
+<body>
+    <!-- navbar -->
+    <nav class="navbar">
+        <!-- logo -->
+        <div class="logo">
+            <h3>Al-Azeem</h3>
+        </div>
+
+        <!-- link-button -->
+        <div class="link-buttons">
+            <!-- btn1 -->
+            <a href="https://weather-app-nine-phi-73.vercel.app/"><button class="btn1">Weather Forecaster</button></a>
+            <!-- btn2 -->
+            <a href=""><button class="btn2">Monitor Dashboard</button></a>
+        </div>
+    </nav>
+    <div class="connection-status" id="connectionStatus">
+        🔴 Connecting...
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>💧 Al-Azeem Smart Monitor Dashboard</h1>
+            <p>Real-time monitoring system</p>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-title">
+                    🌊 Water Level
+                </div>
+                <div class="card-value" id="waterLevel">---</div>
+                <div class="water-level-bar">
+                    <div class="water-level-fill" id="waterLevelBar"></div>
+                </div>
+                <span class="card-status" id="waterStatus">Unknown</span>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    🌡️ Temperature
+                </div>
+                <div class="card-value" id="temperature">--°C</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    💨 Humidity
+                </div>
+                <div class="card-value" id="humidity">--%</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    ⚡ Relay Status
+                </div>
+                <div class="card-value" id="relayValue">---</div>
+                <span class="card-status" id="relayStatus">Unknown</span>
+            </div>
+        </div>
+
+        <div class="last-update" id="lastUpdate">
+            Last updated: Never
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="script.js"></script>
+</body>
+
+</html>
