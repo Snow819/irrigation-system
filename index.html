@@ -4,12 +4,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- css link -->
-    <link rel="stylesheet" href="style.css">
-    <!-- favicon link -->
-    <link rel="shortcut icon" href="./asset/favicon.ico" type="image/x-icon">
-    <!-- title -->
-    <title>Water Level Monitor Dashboard</title>
+    <title>Al Azeem Monitor Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #023436;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        * Navbar */ .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .logo h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff8552;
+        }
+
+        .link-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .link-buttons button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Button Styles */
+        .btn1 {
+            background: #03b5aa;
+            color: white;
+        }
+
+        .btn1:hover {
+            background: #02877f;
+            transform: scale(1.05);
+        }
+
+        .btn2 {
+            background: #ff8552;
+            color: white;
+        }
+
+        .btn2:hover {
+            background: #e76e37;
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        .card-status {
+            font-size: 14px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .status-dry {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-touching {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-submerged {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .status-transition {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
+
+        .relay-on {
+            background: #dcfce7;
+            color: #16a34a;
+            animation: pulse 2s infinite;
+        }
+
+        .relay-off {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .water-level-bar {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .water-level-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .connected {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .disconnected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .last-update {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,13 +241,14 @@
             <a href="https://irrigation-system-seven.vercel.app/"><button class="btn2">Monitor Dashboard</button></a>
         </div>
     </nav>
+
     <div class="connection-status" id="connectionStatus">
         🔴 Connecting...
     </div>
 
     <div class="container">
         <div class="header">
-            <h1>💧 Al-Azeem Smart Monitor Dashboard</h1>
+            <h1>💧 Water Level Monitor Dashboard</h1>
             <p>Real-time monitoring system</p>
         </div>
 
@@ -78,8 +292,186 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="script.js"></script>
+    <!-- Firebase SDK - Updated for better compatibility -->
+    <script type="module">
+        // Test if modules are loading
+        console.log("🚀 Script started loading...");
+
+        try {
+            // Import Firebase modules
+            const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+            const { getDatabase, ref, onValue } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js');
+            const { getAuth, signInAnonymously, onAuthStateChanged } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+
+            console.log("✅ Firebase modules loaded successfully");
+
+            // Your Firebase configuration - cleaned up with debug
+            const firebaseConfig = {
+                apiKey: "AIzaSyB3kxjeWnNA7MnK0NxKlxCC9njsc4-dKDM",
+                authDomain: "soil-monitor-system.firebaseapp.com",
+                databaseURL: "https://soil-monitor-system-default-rtdb.firebaseio.com",
+                projectId: "soil-monitor-system",
+                storageBucket: "soil-monitor-system.appspot.com"
+            };
+
+            console.log("🔧 Initializing Firebase...");
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const database = getDatabase(app);
+            const auth = getAuth(app);
+
+            console.log("✅ Firebase initialized");
+
+            // DOM elements
+            const connectionStatus = document.getElementById('connectionStatus');
+            const waterLevel = document.getElementById('waterLevel');
+            const waterStatus = document.getElementById('waterStatus');
+            const waterLevelBar = document.getElementById('waterLevelBar');
+            const temperature = document.getElementById('temperature');
+            const humidity = document.getElementById('humidity');
+            const relayValue = document.getElementById('relayValue');
+            const relayStatus = document.getElementById('relayStatus');
+            const lastUpdate = document.getElementById('lastUpdate');
+
+            // Function to update connection status
+            function updateConnectionStatus(connected) {
+                if (connected) {
+                    connectionStatus.textContent = '🟢 Connected';
+                    connectionStatus.className = 'connection-status connected';
+                } else {
+                    connectionStatus.textContent = '🔴 Disconnected';
+                    connectionStatus.className = 'connection-status disconnected';
+                }
+            }
+
+            // Function to calculate water level percentage (0-100%)
+            function calculateWaterPercentage(value) {
+                if (value < 1000) return 0; // Dry
+                if (value > 2000) return 100; // Submerged
+                // Linear interpolation between 1000 and 2000
+                return ((value - 1000) / 1000) * 100;
+            }
+
+            // Function to get status class
+            function getStatusClass(status) {
+                switch (status) {
+                    case 'DRY': return 'status-dry';
+                    case 'TOUCHING_WATER': return 'status-touching';
+                    case 'SUBMERGED': return 'status-submerged';
+                    case 'TRANSITION': return 'status-transition';
+                    default: return '';
+                }
+            }
+
+            // Function to initialize database listeners
+            function initializeListeners() {
+                console.log("🔗 Setting up database listeners...");
+
+                // Listen to latest data
+                const latestRef = ref(database, 'latest');
+                onValue(latestRef, (snapshot) => {
+                    console.log("📡 Received data from Firebase");
+                    updateConnectionStatus(true);
+
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        console.log("📊 Data:", data);
+
+                        // Update water level
+                        if (data.water_level !== undefined) {
+                            waterLevel.textContent = data.water_level;
+                            const percentage = calculateWaterPercentage(data.water_level);
+                            waterLevelBar.style.width = percentage + '%';
+                        }
+
+                        // Update water status
+                        if (data.water_status) {
+                            waterStatus.textContent = data.water_status.replace('_', ' ');
+                            waterStatus.className = 'card-status ' + getStatusClass(data.water_status);
+                        }
+
+                        // Update temperature
+                        if (data.temperature !== undefined) {
+                            temperature.textContent = data.temperature.toFixed(1) + '°C';
+                        }
+
+                        // Update humidity
+                        if (data.humidity !== undefined) {
+                            humidity.textContent = data.humidity.toFixed(1) + '%';
+                        }
+
+                        // Update relay status
+                        if (data.relay_state !== undefined) {
+                            relayValue.textContent = data.relay_state ? 'ON' : 'OFF';
+                            relayStatus.textContent = data.relay_state ? 'Active' : 'Inactive';
+                            relayStatus.className = 'card-status ' + (data.relay_state ? 'relay-on' : 'relay-off');
+                        }
+
+                        // Update last update time
+                        if (data.last_update) {
+                            const updateTime = new Date(parseInt(data.last_update));
+                            lastUpdate.textContent = 'Last updated: ' + updateTime.toLocaleString();
+                        }
+
+                    } else {
+                        console.log("❌ No data available in Firebase");
+                    }
+                }, (error) => {
+                    console.error("❌ Error reading data:", error);
+                    updateConnectionStatus(false);
+                });
+
+                // Handle connection state
+                const connectedRef = ref(database, '.info/connected');
+                onValue(connectedRef, (snapshot) => {
+                    const isConnected = snapshot.val() === true;
+                    console.log("🔌 Firebase connection state:", isConnected);
+                    updateConnectionStatus(isConnected);
+                });
+            }
+
+            // Authentication state listener with better error handling
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    console.log("✅ User authenticated:", user.uid);
+                    connectionStatus.textContent = '🟢 Authenticated & Connected';
+                    connectionStatus.className = 'connection-status connected';
+                    initializeListeners();
+                } else {
+                    console.log("❌ User not authenticated, signing in anonymously...");
+                    connectionStatus.textContent = '🔄 Authenticating...';
+                    signInAnonymously(auth)
+                        .then((result) => {
+                            console.log("✅ Anonymous sign-in successful:", result.user.uid);
+                        })
+                        .catch((error) => {
+                            console.error("❌ Authentication failed:", error);
+                            console.error("Error code:", error.code);
+                            console.error("Error message:", error.message);
+                            connectionStatus.textContent = '🔴 Auth Failed: ' + error.code;
+                            connectionStatus.className = 'connection-status disconnected';
+                        });
+                }
+            });
+
+            // Add connection timeout
+            setTimeout(() => {
+                if (connectionStatus.textContent.includes('Connecting') || connectionStatus.textContent.includes('Authenticating')) {
+                    console.error("❌ Connection timeout - check Firebase settings");
+                    connectionStatus.textContent = '🔴 Connection Timeout';
+                    connectionStatus.className = 'connection-status disconnected';
+                }
+            }, 10000); // 10 second timeout
+
+            console.log("🎯 Dashboard initialized and listening for real-time updates...");
+
+        } catch (error) {
+            console.error("❌ Failed to load Firebase modules:", error);
+            document.getElementById('connectionStatus').textContent = '🔴 Module Load Failed';
+            document.getElementById('connectionStatus').className = 'connection-status disconnected';
+        }
+    </script>
 </body>
 
 </html>
